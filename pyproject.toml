@@ -1,0 +1,24 @@
+[project]
+name = "paper2ppt"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "LiDing", email = "72634327+linkedlist771@users.noreply.github.com"},
+]
+dependencies = [
+    "python-pptx>=0.6.23",
+    "langchain>=0.2.12",
+    "langchain-community>=0.2.10",
+    "pypdf>=4.3.1",
+    "loguru>=0.7.2",
+    "openai>=1.37.2",
+    "tiktoken>=0.7.0",
+    "PyMuPDF>=1.24.9",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
