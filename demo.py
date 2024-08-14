@@ -18,8 +18,9 @@ loader = PyPDFLoader(paper_path)
 documents = loader.load()
 
 # Split the text into chunks
-text_splitter = RecursiveCharacterTextSplitter(separators=["\n\n", "\n", " ", ""],
-chunk_size=2000, chunk_overlap=200)
+text_splitter = RecursiveCharacterTextSplitter(
+    separators=["\n\n", "\n", " ", ""], chunk_size=2000, chunk_overlap=200
+)
 texts = text_splitter.split_documents(documents)
 for idx, t in enumerate(texts):
     logger.info(f"Text {idx}: {t}")
@@ -40,6 +41,7 @@ def extract_images(pdf_path):
             images.append(image)
     pdf_document.close()
     return images
+
 
 # Extract images
 images = extract_images(paper_path)
@@ -109,4 +111,3 @@ llm = OpenAI(temperature=0.5)
 # prs.save('paper_summary.pptx')
 #
 # print("PowerPoint summary created successfully!")
-
