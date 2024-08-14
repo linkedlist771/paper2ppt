@@ -1,8 +1,11 @@
 # File: config.py
+import json
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
+from typing import Dict, Any, Tuple
 
+from src.paper2ppt.configs.path_config import ROOT_PATH
 from src.paper2ppt.prompt_builder.output_language import OutputLanguage
 
 
@@ -23,17 +26,29 @@ class Settings(BaseSettings):
 
     # 其他应用特定配置...
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=True,
-    )
+
+    # OPENAI API KEY
+    OPENAI_API_KEY: str = ""
+
+
+def load_settings() -> Settings:
+    settings = Settings()
+    json_path = ROOT_PATH / "config.json"
+    if json_path.exists():
+        with open(json_path, "r") as f:
+            for k, v in json.load(f).items():
+                setattr(settings, k, v)
+    return settings
 
 
 @lru_cache()
 def get_settings() -> Settings:
-    return Settings()
+    return load_settings()
 
+
+if __name__ == "__main__":
+    settings = get_settings()
+    print(settings.model_dump())
 
 # 使用方法
 # from config import get_settings
