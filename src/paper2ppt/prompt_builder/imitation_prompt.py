@@ -18,7 +18,8 @@ Current Related Text:
 {self.current_related_text}
 
 Task: Create a new text that imitates the style of the reference, while considering 
-the current related text and maintaining the essence of the original style.
+the current related text and maintaining the essence of the original style. Make your 
+response in the markdown format.
 
 {keywords_instruction}
 

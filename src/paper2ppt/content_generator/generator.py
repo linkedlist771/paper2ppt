@@ -57,21 +57,22 @@ class ContentGenerator(object):
         return Document(page_content=res)
 
     async def generate_contents(self) -> List[Document]:
-        async def process_pair(related, reference):
-            return await self.generate_single_content(related, reference)
-
-        tasks = [
-            process_pair(related, reference)
-            for related, reference in zip(self.related_contents, self.reference_documents)
-        ]
+        async def process_pair(idx: int, related: Document, reference: Document):
+            res = await self.generate_single_content(related, reference)
+            return idx, res
 
         # results = await tqdm_asyncio.gather(*tasks)
-        results = []
+        tasks = [
+            process_pair(i, related, reference)
+            for i, (related, reference) in enumerate(zip(self.related_contents, self.reference_documents))
+        ]
+
+        results = [None] * len(tasks)  # Pre-allocate the result list
         total_tasks = len(tasks)
 
         for f in tqdm_asyncio.as_completed(tasks, total=total_tasks):
-            result = await f
-            results.append(result)
+            index, result = await f
+            results[index] = result
 
         return results
 
