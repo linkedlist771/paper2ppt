@@ -26,7 +26,6 @@ class Settings(BaseSettings):
 
     # 其他应用特定配置...
 
-
     # OPENAI API KEY
     OPENAI_API_KEY: str = ""
 
