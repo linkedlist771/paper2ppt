@@ -19,6 +19,7 @@ dependencies = [
     "python-docx>=1.1.2",
     "markdown>=3.6",
     "unifyai>=0.9.2",
+    "nltk>=3.8.1",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"

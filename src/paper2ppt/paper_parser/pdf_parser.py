@@ -18,8 +18,8 @@ def main():
     paper_path = RESOURCES_PATH / "AWQ-paper.pdf"
     parser = PDFParser(paper_path)
     data = parser.load()
-    logger.info(f"Data: {data}")
-
+    for i, page in enumerate(data):
+        logger.info(f"Page {i}: {page.page_content}")
 
 if __name__ == "__main__":
     main()
