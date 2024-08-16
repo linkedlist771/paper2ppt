@@ -1,4 +1,6 @@
-from docx import Document
+from typing import List
+
+from langchain_core.documents import Document
 from pathlib import Path
 from loguru import logger
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -23,6 +25,12 @@ headers_to_split_on = [
     ("###", "Header 3"),
 ]
 
+header2md = {
+    "Header 1": "#",
+    "Header 2": "##",
+    "Header 3": "###",
+}
+
 
 class ReferenceParser:
     def __init__(self, docx_path):
@@ -34,6 +42,16 @@ class ReferenceParser:
             )
 
         self.docx_path = docx_path
+
+    def merge_metadata_into_documents(self, documents: List[Document]) -> List[Document]:
+        new_documents = []
+        for doc in documents:
+            page_content = doc.page_content
+            if doc.metadata:
+                format_str = "\n".join([f"{header2md[k]} {v}" for k, v in doc.metadata.items()])
+                page_content = f"{format_str}\n{page_content}"
+            new_documents.append(Document(page_content=page_content))
+        return new_documents
 
     def load(self):
         # markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
@@ -47,6 +65,7 @@ class ReferenceParser:
             headers_to_split_on=headers_to_split_on
         )
         md_header_splits = markdown_splitter.split_text(page_content)
+        md_header_splits = self.merge_metadata_into_documents(md_header_splits)
         return md_header_splits
 
 

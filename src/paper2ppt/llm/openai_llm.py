@@ -37,3 +37,10 @@ class ClientWrapper:
 @lru_cache()
 def get_openai_sync_client() -> ClientWrapper:
     return ClientWrapper(sync_client)
+
+
+if __name__ == "__main__":
+    client = get_openai_sync_client()
+    res = client.generate("Hello, world!")
+    print(res)
+    pass
